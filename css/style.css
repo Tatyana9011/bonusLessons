@@ -1,0 +1,117 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: "Lato", sans-serif;
+  font-weight: normal;
+  line-height: 1.2;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: normal;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-text-size-adjust: none;
+}
+
+.header-menu {
+  margin-bottom: 15px;
+  max-width: 1280px;
+  min-width: 980px;
+  background-color: #303030;
+  position: relative;
+  transition: all 0.1s ease-in 0s;
+  padding: 15px 0;
+}
+
+.heder-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 10px;
+}
+
+.heder-title-text {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #939699;
+  font-family: "Lato", sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 25px;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+}
+
+.navigation {
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navigation-link {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #939699;
+  font-family: "Lato", sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+}
+
+.content-heroes {
+  max-width: 1280px;
+  min-width: 980px;
+  justify-content: space-around;
+}
+.carts {
+  justify-content: center;
+}
+.cart-actors {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  min-width: 300px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 15px 15px;
+  margin: 15px 5px;
+  border: 2px solid #939699;
+}
+li {
+  flex-direction: column;
+}
+.img-actor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 255px;
+  max-height: 360px;
+  height: auto;
+  border-radius: 4%;
+  margin-bottom: 10px;
+}
+
+.info-actors-link {
+  text-decoration: none;
+  color: #939699;
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+.info-actors-link span {
+  font-weight: 600;
+  color: #252525;
+}

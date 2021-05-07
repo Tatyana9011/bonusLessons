@@ -1,34 +1,30 @@
 // eslint-disable-next-line strict
 'use strict';
 const cartsDiv = document.querySelector('.carts'),
-  navigationLink = document.querySelectorAll('.navigation-link');
+  navigationLink = document.querySelectorAll('.navigation-link'),
+  inputAll = document.querySelector('input');
 
-const checkData = url => new Promise((resolve, reject) => {
-  const request = new XMLHttpRequest();
-  request.open('GET', url);
-  request.setRequestHeader('Content-type', 'application/json');
-
-  request.addEventListener('readystatechange', () => {
-    if (request.readyState !== 4) {
-      return;
+const checkData = () => {
+  const data = [];
+  return async () => {
+    if (data.length) {
+      return data;
     }
-    if (request.status === 200) {
-      const response = JSON.parse(request.responseText);
-      resolve(response);
-    } else {
-      reject(request.statusText);
+    const response = await fetch('./../dbHeroes/dbHeroes.json');
+    if (response.status !== 200) {
+      throw new Error('status network not 200');
     }
-  });
-  request.send();
-});
+    data.push(...(await response.json()));
+    return data;
+  };
+};
 
-const getData = checkData('./../dbHeroes/dbHeroes.json');
+const getData = checkData();
 
 class Cart {
   constructor() {
     this.cartActor = [];
   }
-
   createCartActor({ name, citizenship, birthDay, deathDay, status, actors, photo, movies, gender }) {
     const divInfo = document.createElement('div');
     divInfo.classList.add('cart-actors');
@@ -62,48 +58,67 @@ class Cart {
             </ul>`;
     return divInfo;
   }
-
   renderCart(data) {
     cartsDiv.textContent = '';
     this.cartActor = data.map(this.createCartActor);
     cartsDiv.append(...this.cartActor);
   }
-
+  filterCart(field, value) {
+    return data => data.filter(actor => actor[field] === value);
+  }
 }
 
 const cart = new Cart();
-const filterCart = (field, value) => {
-  getData
-    .then(data => data.filter(actor => actor[field] === value))
-    .then(cart.renderCart.bind(cart));
+
+const modal = () => {
+  const modalElem = document.querySelector('.modal'),
+    imgActor = document.querySelectorAll('.img-actor'),
+    overlayElem = document.querySelector('.overlay'),
+    closeElem = document.querySelector('.modal-close__btn'),
+    formAvatar = document.querySelector('.form__avatar');
+
+  imgActor.forEach(item => {
+    item.addEventListener('click', () => {
+      modalElem.style.display = 'block';
+      formAvatar.src = item.src;
+    });
+  });
+  const closeModal = (elem, event) => {
+    const target = event.target;
+    if (target === elem) {
+      modalElem.style.display = 'none';
+    }
+  };
+  closeElem.addEventListener('click', closeModal.bind(null, closeElem));
+  overlayElem.addEventListener('click', closeModal.bind(null, overlayElem));
+
 };
 
+getData()
+  .then(cart.renderCart.bind(cart))
+  .then(modal);
+
 navigationLink.forEach(link => {
-  link.addEventListener('click', event => {
+  link.addEventListener('change', event => {
     event.preventDefault();
     const target = event.target;
-    if (target.type.toLowerCase() !== 'button') {
+    if (target.matches('select')) {
       const field = target.dataset.field;
       const value = link.options[link.selectedIndex].value;
 
       if (field && value) {
-        filterCart(field, value);
-      } else {
-        getData
+        getData()
+          .then(cart.filterCart(field, value))
           .then(cart.renderCart.bind(cart))
-          .catch(error => console.log(error));
+          .then(modal);
       }
     }
-    getData
-      .then(cart.renderCart.bind(cart))
-      .catch(error => console.log(error));
-
   });
 });
 
-getData
-  .then(cart.renderCart.bind(cart))
-  .catch(error => console.log(error));
-
-
-
+inputAll.addEventListener('click', event => {
+  event.preventDefault();
+  getData()
+    .then(cart.renderCart.bind(cart))
+    .then(modal);
+});

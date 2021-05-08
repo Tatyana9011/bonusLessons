@@ -10,7 +10,7 @@ const checkData = () => {
     if (data.length) {
       return data;
     }
-    const response = await fetch('./../dbHeroes/dbHeroes.json');
+    const response = await fetch('./dbHeroes/dbHeroes.json');
     if (response.status !== 200) {
       throw new Error('status network not 200');
     }
